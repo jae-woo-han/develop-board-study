@@ -2,6 +2,8 @@ package com.board.dbConfig;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
@@ -37,4 +39,15 @@ public class MariaDBConnectConfig implements DBConnentConfig{
         }
         return conn;
     }
+
+	@Override
+	public void closeDB(Connection conn, PreparedStatement pstmt, ResultSet rs) {
+		try{
+            if(rs != null)rs.close();
+            if(pstmt != null)pstmt.close();
+            if(conn != null && !conn.isClosed())conn.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+	}
 }
