@@ -12,8 +12,8 @@ class PostDaoTest {
 	PostDao dao = new PostDao();
 	@Test
 	void 게시글목록조회() {
-		PostDao postDao = new PostDao();
-		List<PostInfo> postList = postDao.getPostList();
+		
+		List<PostInfo> postList = dao.getPostList();
 		
 		assertEquals("sample", postList.get(0).getTitle());
 	}
