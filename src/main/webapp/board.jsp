@@ -1,3 +1,5 @@
+<%@page import="com.board.domain.CategoryInfo"%>
+<%@page import="com.board.dao.CategoryDao"%>
 <%@page import="com.board.domain.PostInfo"%>
 <%@page import="com.board.dao.PostDao"%>
 <%@page import="java.util.List"%>
@@ -8,6 +10,9 @@
 //게시글 조회
 PostDao postDao = new PostDao();
 List<PostInfo> postList = postDao.getPostList();
+
+CategoryDao categoryDao = new CategoryDao();
+List<CategoryInfo> categoryList = categoryDao.getCategoryAll();
 
 //페이지 이동
 //게시글 등록
@@ -83,7 +88,7 @@ body {
 		<div>검색창</div>
 	</nav>
 	<main>
-		<div><%=postList.toString()%></div>
+		<div><%=postList.size()%></div>
 		<div>
 			<div class="board-container">
 				<div class="board-container__row board-container__header">
