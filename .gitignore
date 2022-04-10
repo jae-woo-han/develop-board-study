@@ -31,3 +31,4 @@ local.properties
 # IDEA
 *.iml
 .idea
+/target/
