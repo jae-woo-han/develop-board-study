@@ -12,6 +12,8 @@
 //게시글 조회
 PostDao postDao = new PostDao();
 List<PostInfo> postList = postDao.getPostList();
+int totalPostCount = postList.size();
+
 
 CategoryDao categoryDao = new CategoryDao();
 List<CategoryInfo> categoryList = categoryDao.getCategoryAll();
@@ -93,7 +95,7 @@ body {
 		<div>검색창</div>
 	</nav>
 	<main>
-		<div><%=postList.size()%></div>
+		<div><%=totalPostCount%></div>
 		<div>
 			<div class="board-container">
 				<div class="board-container__row board-container__header">
@@ -107,7 +109,12 @@ body {
 				</div>
 				
 				<%
-					for(PostInfo item: postList){
+					
+					for(int i = 0;i<10;i++){
+						if(i==totalPostCount)break;
+						
+						PostInfo item = postList.get(i);
+						
 						String result = "<div class='board-container__row'>";
 						result +=utils.createListItem(categoryList.get(item.getCategoryId()).getCategoryName(), "category");
 						result +=utils.createListItem("<i class='fa-solid fa-paperclip'></i>", "file");
