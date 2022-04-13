@@ -1,4 +1,5 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="java.io.IOException"%>
+<%@page import="com.board.util.StringUtil"%>
 <%@page import="com.board.domain.CategoryInfo"%>
 <%@page import="com.board.dao.CategoryDao"%>
 <%@page import="com.board.domain.PostInfo"%>
@@ -14,6 +15,9 @@ List<PostInfo> postList = postDao.getPostList();
 
 CategoryDao categoryDao = new CategoryDao();
 List<CategoryInfo> categoryList = categoryDao.getCategoryAll();
+
+//게시글 목록 그리는 메소드
+StringUtil utils = new StringUtil();
 
 //페이지 이동
 //게시글 등록
@@ -101,72 +105,21 @@ body {
 					<div class="board-container__row-item--date">등록일시</div>
 					<div class="board-container__row-item--date">수정일시</div>
 				</div>
-				<div class="board-container__row">
-					<div class="board-container__row-item--category">자바</div>
-					<div class="board-container__row-item--file"></div>
-					<div class="board-container__row-item--title">자바 공부해봐요</div>
-					<div class="board-container__row-item--writer">한재우</div>
-					<div class="board-container__row-item--count">75</div>
-					<div class="board-container__row-item--date">2022.04.10 17:10</div>
-					<div class="board-container__row-item--date">2022.04.10 17:11</div>
-				</div>
-				<div class="board-container__row">
-					<div class="board-container__row-item--category">자바</div>
-					<div class="board-container__row-item--file"></div>
-					<div class="board-container__row-item--title">자바 공부해봐요</div>
-					<div class="board-container__row-item--writer">한재우</div>
-					<div class="board-container__row-item--count">75</div>
-					<div class="board-container__row-item--date">2022.04.10 17:10</div>
-					<div class="board-container__row-item--date">2022.04.10 17:11</div>
-				</div>
-				<div class="board-container__row">
-					<div class="board-container__row-item--category">자바</div>
-					<div class="board-container__row-item--file"></div>
-					<div class="board-container__row-item--title">자바 공부해봐요</div>
-					<div class="board-container__row-item--writer">한재우</div>
-					<div class="board-container__row-item--count">75</div>
-					<div class="board-container__row-item--date">2022.04.10 17:10</div>
-					<div class="board-container__row-item--date">2022.04.10 17:11</div>
-				</div>
-				<div class="board-container__row">
-					<div class="board-container__row-item--category">자바</div>
-					<div class="board-container__row-item--file"></div>
-					<div class="board-container__row-item--title">자바 공부해봐요</div>
-					<div class="board-container__row-item--writer">한재우</div>
-					<div class="board-container__row-item--count">75</div>
-					<div class="board-container__row-item--date">2022.04.10 17:10</div>
-					<div class="board-container__row-item--date">2022.04.10 17:11</div>
-				</div>
-				<div class="board-container__row">
-					<div class="board-container__row-item--category">자바</div>
-					<div class="board-container__row-item--file"></div>
-					<div class="board-container__row-item--title">자바 공부해봐요</div>
-					<div class="board-container__row-item--writer">한재우</div>
-					<div class="board-container__row-item--count">75</div>
-					<div class="board-container__row-item--date">2022.04.10 17:10</div>
-					<div class="board-container__row-item--date">2022.04.10 17:11</div>
-				</div>
-				<div class="board-container__row">
-					<div class="board-container__row-item--category">자바</div>
-					<div class="board-container__row-item--file">
-						<i class="fa-solid fa-paperclip"></i>
-					</div>
-					<div class="board-container__row-item--title">자바 공부해봐요</div>
-					<div class="board-container__row-item--writer">한재우</div>
-					<div class="board-container__row-item--count">75</div>
-					<div class="board-container__row-item--date">2022.04.10 17:10</div>
-					<div class="board-container__row-item--date">2022.04.10 17:11</div>
-				</div>
-				<div class="board-container__row">
-					<div class="board-container__row-item--category">자바</div>
-					<div class="board-container__row-item--file"></div>
-					<div class="board-container__row-item--title">자바 공부해봐요</div>
-					<div class="board-container__row-item--writer">한재우</div>
-					<div class="board-container__row-item--count">75</div>
-					<div class="board-container__row-item--date">2022.04.10 17:10</div>
-					<div class="board-container__row-item--date">2022.04.10 17:11</div>
-				</div>
-
+				
+				<%
+					for(PostInfo item: postList){
+						String result = "<div class='board-container__row'>";
+						result +=utils.createListItem(categoryList.get(item.getCategoryId()).getCategoryName(), "category");
+						result +=utils.createListItem("<i class='fa-solid fa-paperclip'></i>", "file");
+						result +=utils.createListItem(item.getTitle(), "title");
+						result +=utils.createListItem(item.getWriter(), "writer");
+						result +=utils.createListItem(Integer.toString(item.getViewCount()), "count");
+						result +=utils.createListItem(item.getWriteDt().toString(), "date");
+						result +=utils.createListItem(item.getUpdateDt().toString(), "date");
+						result +="</div>";
+						out.print(result);
+					}
+				%>
 			</div>
 		</div>
 		<div>
