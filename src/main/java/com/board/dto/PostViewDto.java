@@ -58,6 +58,12 @@ public class PostViewDto {
 	public void setViewCount(int viewCount) {
 		this.viewCount = viewCount;
 	}
+	@Override
+	public String toString() {
+		return "PostViewDto [postId=" + postId + ", categoryName=" + categoryName + ", title=" + title + ", writer="
+				+ writer + ", writeDt=" + writeDt + ", updateDt=" + updateDt + ", viewCount=" + viewCount + "]";
+	}
+	
 	
 	
 }

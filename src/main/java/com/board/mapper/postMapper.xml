@@ -2,17 +2,36 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="aa">
-	<select id="selectPost" resultType="postInfo">
+<mapper namespace="post">
+	<select id="selectPostView" resultType="postView">
 		select 
-			post_id
-			, category_id
-			, title
-			, post_content
-			, writer
-			, write_dt
-			, update_dt 
-		from post_info 
-			where post_id = #{post_id}
+			po.post_id
+			, ca.category_name 
+			, po.title
+			, po.post_content
+			, po.writer
+			, po.write_dt
+			, po.update_dt 
+		from post_info po
+			inner join category_info ca
+			on (po.category_id = ca.category_id)
+		<where>
+			<if test="post_id != null">
+				po.post_id = #{post_id}
+			</if>
+		</where>
+	</select>
+	<select id="selectPostViewList" resultType="hashMap">
+		select 
+			po.post_id
+			, ca.category_name 
+			, po.title
+			, po.post_content
+			, po.writer
+			, po.write_dt
+			, po.update_dt 
+		from post_info po
+			inner join category_info ca
+			on (po.category_id = ca.category_id)
 	</select>
 </mapper>

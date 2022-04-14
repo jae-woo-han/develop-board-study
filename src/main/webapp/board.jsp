@@ -1,3 +1,4 @@
+<%@page import="com.board.dto.PostViewDto"%>
 <%@page import="java.io.IOException"%>
 <%@page import="com.board.util.StringUtil"%>
 <%@page import="com.board.domain.CategoryInfo"%>
@@ -11,7 +12,7 @@
 //게시글 목록 페이지
 //게시글 조회
 PostDao postDao = new PostDao();
-List<PostInfo> postList = postDao.getPostList();
+List<PostViewDto> postList = postDao.getPostViewList();
 int totalPostCount = postList.size();
 
 
@@ -113,10 +114,10 @@ body {
 					for(int i = 0;i<10;i++){
 						if(i==totalPostCount)break;
 						
-						PostInfo item = postList.get(i);
+						PostViewDto item = postList.get(i);
 						
 						String result = "<div class='board-container__row'>";
-						result +=utils.createListItem(categoryList.get(item.getCategoryId()).getCategoryName(), "category");
+						result +=utils.createListItem(item.getCategoryName(), "category");
 						result +=utils.createListItem("<i class='fa-solid fa-paperclip'></i>", "file");
 						result +=utils.createListItem(item.getTitle(), "title");
 						result +=utils.createListItem(item.getWriter(), "writer");
