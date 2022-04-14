@@ -86,6 +86,10 @@ body {
 	display: flex;
 	justify-content: center;
 }
+.flex-container--align-right{
+	display: flex;
+	justify-content: flex-end;
+}
 </style>
 <script src="https://kit.fontawesome.com/87e4ead53b.js"
 	crossorigin="anonymous"></script>
@@ -118,7 +122,7 @@ body {
 						
 						String result = "<div class='board-container__row'>";
 						result +=utils.createListItem(item.getCategoryName(), "category");
-						result +=utils.createListItem("<i class='fa-solid fa-paperclip'></i>", "file");
+						result +=utils.createListItem(item.getFileCount()>0?"<i class='fa-solid fa-paperclip'></i>":"", "file");
 						result +=utils.createListItem(item.getTitle(), "title");
 						result +=utils.createListItem(item.getWriter(), "writer");
 						result +=utils.createListItem(Integer.toString(item.getViewCount()), "count");
@@ -147,7 +151,9 @@ body {
 				</button>
 			</div>
 		</div>
-		<div>버튼</div>
+		<div class="flex-container--align-right">
+			<button>등록</button>
+		</div>
 	</main>
 </body>
 </html>

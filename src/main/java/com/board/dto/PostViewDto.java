@@ -10,12 +10,12 @@ import java.time.LocalDateTime;
 public class PostViewDto {
 	private int postId;
 	private String categoryName;
+	private int fileCount;
 	private String title;
 	private String writer;
 	private LocalDateTime writeDt;
 	private LocalDateTime updateDt;
 	private int viewCount;
-	
 	public int getPostId() {
 		return postId;
 	}
@@ -27,6 +27,12 @@ public class PostViewDto {
 	}
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
+	}
+	public int getFileCount() {
+		return fileCount;
+	}
+	public void setFileCount(int fileCount) {
+		this.fileCount = fileCount;
 	}
 	public String getTitle() {
 		return title;
@@ -60,10 +66,9 @@ public class PostViewDto {
 	}
 	@Override
 	public String toString() {
-		return "PostViewDto [postId=" + postId + ", categoryName=" + categoryName + ", title=" + title + ", writer="
-				+ writer + ", writeDt=" + writeDt + ", updateDt=" + updateDt + ", viewCount=" + viewCount + "]";
+		return "PostViewDto [postId=" + postId + ", categoryName=" + categoryName + ", fileCount=" + fileCount
+				+ ", title=" + title + ", writer=" + writer + ", writeDt=" + writeDt + ", updateDt=" + updateDt
+				+ ", viewCount=" + viewCount + "]";
 	}
-	
-	
 	
 }
