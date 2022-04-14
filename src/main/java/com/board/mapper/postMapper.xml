@@ -3,36 +3,34 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="post">
-	<select id="selectPostView" resultType="postView">
-		select 
-			po.post_id
-			, ca.category_name 
-			, (select count(*) from file_info fi where fi.post_id = po.post_id) as file_count
-			, po.title
-			, po.post_content
-			, po.writer
-			, po.write_dt
-			, po.update_dt 
+	<select id="selectPostView" resultType="postView"
+		parameterType="Map">
+		select
+		po.post_id
+		, ca.category_name
+		, (select count(*) from file_info fi where fi.post_id = po.post_id) as
+		file_count
+		, po.title
+		, po.post_content
+		, po.writer
+		, po.write_dt
+		, po.update_dt
 		from post_info po
-			inner join category_info ca
-			on (po.category_id = ca.category_id)
+		inner join category_info ca
+		on (po.category_id = ca.category_id)
 		<where>
 			<if test="post_id != null">
 				po.post_id = #{post_id}
 			</if>
 		</where>
+		order by po.write_dt desc
+		<if test="start != null">
+			limit ${start}, 10;
+		</if>
 	</select>
-	<select id="selectPostViewList" resultType="hashMap">
-		select 
-			po.post_id
-			, ca.category_name 
-			, po.title
-			, po.post_content
-			, po.writer
-			, po.write_dt
-			, po.update_dt 
-		from post_info po
-			inner join category_info ca
-			on (po.category_id = ca.category_id)
+	<select id="postTotalCount" resultType="int">
+		select count(*) from
+		post_info
 	</select>
+
 </mapper>
