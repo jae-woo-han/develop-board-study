@@ -5,13 +5,14 @@ import java.time.LocalDateTime;
  * 
  * @author jaewoo
  * 
- * 게시글 목록에서 각 게시글 표시 위한 DTO
+ * 게시글 표시 위한 DTO
  */
 public class PostViewDto {
 	private int postId;
 	private String categoryName;
 	private int fileCount;
 	private String title;
+	private String postContent;
 	private String writer;
 	private LocalDateTime writeDt;
 	private LocalDateTime updateDt;
@@ -40,6 +41,12 @@ public class PostViewDto {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	public String getPostContent() {
+		return postContent;
+	}
+	public void setPostContent(String postContent) {
+		this.postContent = postContent;
+	}
 	public String getWriter() {
 		return writer;
 	}
@@ -67,8 +74,8 @@ public class PostViewDto {
 	@Override
 	public String toString() {
 		return "PostViewDto [postId=" + postId + ", categoryName=" + categoryName + ", fileCount=" + fileCount
-				+ ", title=" + title + ", writer=" + writer + ", writeDt=" + writeDt + ", updateDt=" + updateDt
-				+ ", viewCount=" + viewCount + "]";
+				+ ", title=" + title + ", postContent=" + postContent + ", writer=" + writer + ", writeDt=" + writeDt
+				+ ", updateDt=" + updateDt + ", viewCount=" + viewCount + "]";
 	}
 	
 }

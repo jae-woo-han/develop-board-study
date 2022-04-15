@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 
+import com.board.domain.PostInfo;
 import com.board.dto.PostSearchForm;
 import com.board.dto.PostViewDto;
 

@@ -111,8 +111,10 @@ body {
 	display: flex;
 	justify-content: center;
 }
-.flex-container--align-right{
+.flex-container{
 	display: flex;
+}
+.flex-container--align-right{
 	justify-content: flex-end;
 }
 </style>
@@ -217,8 +219,8 @@ body {
 				</a>
 			</div>
 		</div>
-		<div class="flex-container--align-right">
-			<button>등록</button>
+		<div class="flex-container flex-container--align-right">
+			<a href="writePost.jsp">등록</a>
 		</div>
 	</main>
 	<script type="text/javascript">
