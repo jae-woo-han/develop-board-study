@@ -13,12 +13,11 @@ public class PageDto<T> {
 	}
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
+		int dividePage = totalCount/10;
+		this.totalPage = (totalCount%10>0?dividePage+1:dividePage);
 	}
 	public int getTotalPage() {
 		return totalPage;
-	}
-	public void setTotalPage(int totalPage) {
-		this.totalPage = totalPage;
 	}
 	public int getViewingPage() {
 		return viewingPage;

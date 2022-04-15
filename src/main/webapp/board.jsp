@@ -1,3 +1,5 @@
+<%@page import="java.util.Optional"%>
+<%@page import="com.board.dto.PageDto"%>
 <%@page import="com.board.dto.PostViewDto"%>
 <%@page import="java.io.IOException"%>
 <%@page import="com.board.util.StringUtil"%>
@@ -11,13 +13,21 @@
 <%
 //게시글 목록 페이지
 //게시글 조회
+int viewingPage = Integer.parseInt(
+		Optional.ofNullable(request.getParameter("page")).orElse("1")
+		);
 PostDao postDao = new PostDao();
-List<PostViewDto> postList = postDao.getPostViewList();
-int totalPostCount = postList.size();
+List<PostViewDto> postList = postDao.getPostViewList(viewingPage);
+int totalPostCount = postDao.getPostTotalCount();
 
 
 CategoryDao categoryDao = new CategoryDao();
 List<CategoryInfo> categoryList = categoryDao.getCategoryAll();
+
+PageDto<PostViewDto> pageDto = new PageDto<>();
+pageDto.setData(postList);
+pageDto.setTotalCount(totalPostCount);
+pageDto.setViewingPage(viewingPage);
 
 //게시글 목록 그리는 메소드
 StringUtil utils = new StringUtil();
@@ -116,14 +126,14 @@ body {
 				<%
 					
 					for(int i = 0;i<10;i++){
-						if(i==totalPostCount)break;
+						if(i==postList.size())break;
 						
 						PostViewDto item = postList.get(i);
 						
-						String result = "<div class='board-container__row'>";
+						String result = "<div class='board-container__row' onclick='location.href'>";
 						result +=utils.createListItem(item.getCategoryName(), "category");
 						result +=utils.createListItem(item.getFileCount()>0?"<i class='fa-solid fa-paperclip'></i>":"", "file");
-						result +=utils.createListItem(item.getTitle(), "title");
+						result +=utils.createListItem("<a href='viewPost.jsp?post="+item.getPostId()+"'>"+item.getTitle()+"</a>", "title");
 						result +=utils.createListItem(item.getWriter(), "writer");
 						result +=utils.createListItem(Integer.toString(item.getViewCount()), "count");
 						result +=utils.createListItem(item.getWriteDt().toString(), "date");
@@ -136,19 +146,34 @@ body {
 		</div>
 		<div>
 			<div class="page-nav">
-				<button>
+				<a href='board.jsp?page=1'>
 					<i class="fa-solid fa-angles-left"></i>
-				</button>
-				<button>
+				</a>
+				<a href='board.jsp?page=<%= viewingPage>1?viewingPage-1:1 %>'>
 					<i class="fa-solid fa-angle-left"></i>
-				</button>
-				<div class="page-nav__list">1 2 3 4</div>
-				<button>
-					<i class="fa-solid fa-angles-right"></i>
-				</button>
-				<button>
+				</a>
+				<div class="page-nav__list">
+					<%
+						int totalPageNum = pageDto.getTotalPage();
+						for(int i = 1;i<=totalPageNum;i++){
+							if(i==viewingPage){
+					%>	
+								<b><%= i %></b>
+					<%	
+							}else{
+					%>
+								<a href='board.jsp?page=<%= i %>'><%= i %></a>
+					<%
+							}
+						}
+					%>
+				</div>
+				<a href='board.jsp?page=<%= viewingPage<totalPageNum?viewingPage+1:totalPageNum %>'>
 					<i class="fa-solid fa-angle-right"></i>
-				</button>
+				</a>
+				<a href='board.jsp?page=<%= totalPageNum %>'>
+					<i class="fa-solid fa-angles-right"></i>
+				</a>
 			</div>
 		</div>
 		<div class="flex-container--align-right">
