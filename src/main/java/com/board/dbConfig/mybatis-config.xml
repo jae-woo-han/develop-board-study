@@ -8,6 +8,7 @@
 	</settings>
 	<typeAliases>
 		<typeAlias type="com.board.dto.PostViewDto" alias="postView" />
+		<typeAlias type="com.board.dto.PostSearchForm" alias="postSearchForm" />
 		<typeAlias type="com.board.domain.PostInfo" alias="postInfo" />
 	</typeAliases>
 	<environments default="development">

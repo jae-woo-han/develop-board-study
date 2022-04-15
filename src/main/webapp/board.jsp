@@ -1,3 +1,7 @@
+<%@page import="org.apache.commons.lang3.StringUtils"%>
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalDate"%>
+<%@page import="com.board.dto.PostSearchForm"%>
 <%@page import="java.util.Optional"%>
 <%@page import="com.board.dto.PageDto"%>
 <%@page import="com.board.dto.PostViewDto"%>
@@ -13,12 +17,23 @@
 <%
 //게시글 목록 페이지
 //게시글 조회
-int viewingPage = Integer.parseInt(
-		Optional.ofNullable(request.getParameter("page")).orElse("1")
-		);
+int viewingPage = StringUtils.isEmpty(request.getParameter("page"))?1:Integer.parseInt(request.getParameter("page"));
+//검색 form 양식
+String fromDt = Optional.ofNullable(request.getParameter("fromDt")).orElse("");
+String toDt =Optional.ofNullable(request.getParameter("toDt")).orElse("");
+String categoryId = Optional.ofNullable(request.getParameter("category")).orElse("");
+String searchMessage = Optional.ofNullable(request.getParameter("searchMessage")).orElse("");
+
+PostSearchForm searchForm = PostSearchForm.builder()
+						.fromDt(StringUtils.isEmpty(fromDt)?null:LocalDate.parse(fromDt, DateTimeFormatter.ISO_LOCAL_DATE))
+						.toDt(StringUtils.isEmpty(toDt)?null:LocalDate.parse(toDt, DateTimeFormatter.ISO_LOCAL_DATE))
+						.categoryId(categoryId)
+						.searchMessage(searchMessage)
+						.start(Integer.toString(viewingPage))
+						.build();
 PostDao postDao = new PostDao();
-List<PostViewDto> postList = postDao.getPostViewList(viewingPage);
-int totalPostCount = postDao.getPostTotalCount();
+List<PostViewDto> postList = postDao.getPostViewList(searchForm);
+int totalPostCount = postDao.getPostCount(searchForm);
 
 
 CategoryDao categoryDao = new CategoryDao();
@@ -107,7 +122,33 @@ body {
 <body>
 	<header>게시판 - 목록</header>
 	<nav>
-		<div>검색창</div>
+		<div>
+			<form action="" method="get" id="searchForm">
+				등록일 
+				<input type="date" name="fromDt">
+				<input type="date" name="toDt">
+				<select name="category">
+					<option value=""></option>
+					<%
+						for(CategoryInfo category : categoryList){
+							String option = "<option value='";
+							option += Integer.toString(category.getCategoryId());
+							option += "' ";
+							if(categoryId.equals(Integer.toString(category.getCategoryId()))){
+								option += "selected";
+							}
+							
+							option += ">"+category.getCategoryName();
+							option += "</option>";
+							out.print(option);
+						}
+					%>
+				</select>
+				<input type="text" name="searchMessage">
+				<input type="hidden" name="page" id="pageInput">
+				<button>검색</button>
+			</form>
+		</div>
 	</nav>
 	<main>
 		<div><%=totalPostCount%></div>
@@ -146,10 +187,10 @@ body {
 		</div>
 		<div>
 			<div class="page-nav">
-				<a href='board.jsp?page=1'>
+				<a href='#' onclick="setPageInput(<%= 1 %>)">
 					<i class="fa-solid fa-angles-left"></i>
 				</a>
-				<a href='board.jsp?page=<%= viewingPage>1?viewingPage-1:1 %>'>
+				<a href='#' onclick="setPageInput(<%= viewingPage>1?viewingPage-1:1 %>)">
 					<i class="fa-solid fa-angle-left"></i>
 				</a>
 				<div class="page-nav__list">
@@ -162,16 +203,16 @@ body {
 					<%	
 							}else{
 					%>
-								<a href='board.jsp?page=<%= i %>'><%= i %></a>
+								<a href='#' onclick="setPageInput(<%= i %>)"><%= i %></a>
 					<%
 							}
 						}
 					%>
 				</div>
-				<a href='board.jsp?page=<%= viewingPage<totalPageNum?viewingPage+1:totalPageNum %>'>
+				<a href='#' onclick="setPageInput(<%= viewingPage<totalPageNum?viewingPage+1:totalPageNum %>)">
 					<i class="fa-solid fa-angle-right"></i>
 				</a>
-				<a href='board.jsp?page=<%= totalPageNum %>'>
+				<a href='#' onclick="setPageInput(<%= totalPageNum %>)">
 					<i class="fa-solid fa-angles-right"></i>
 				</a>
 			</div>
@@ -180,5 +221,13 @@ body {
 			<button>등록</button>
 		</div>
 	</main>
+	<script type="text/javascript">
+	function setPageInput(param){
+		const pageInput = document.querySelector("#pageInput");
+		pageInput.value = param;
+		const form = document.querySelector("#searchForm");
+		form.submit();
+	}
+	</script>
 </body>
 </html>

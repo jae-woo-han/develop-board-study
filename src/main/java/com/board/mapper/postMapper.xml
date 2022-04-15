@@ -4,11 +4,12 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="post">
 	<select id="selectPostView" resultType="postView"
-		parameterType="Map">
+		parameterType="postSearchForm">
 		select
 		po.post_id
 		, ca.category_name
-		, (select count(*) from file_info fi where fi.post_id = po.post_id) as
+		, (select count(*) from file_info fi
+		where fi.post_id = po.post_id) as
 		file_count
 		, po.title
 		, po.post_content
@@ -16,11 +17,27 @@
 		, po.write_dt
 		, po.update_dt
 		from post_info po
-		inner join category_info ca
+		inner join
+		category_info ca
 		on (po.category_id = ca.category_id)
 		<where>
-			<if test="post_id != null">
-				po.post_id = #{post_id}
+			<if test="postId != null">
+				po.post_id = #{postId}
+			</if>
+			<if test="fromDt != null">
+				and po.write_dt <![CDATA[>=]]>
+				#{fromDt}
+				and po.write_dt <![CDATA[<=]]>
+				#{toDt}
+			</if>
+			<if test="categoryId != null">
+				and po.category_id = #{categoryId}
+			</if>
+			<if test="searchMessage != null">
+				and po.title like '%#{searchMessage}%'
+				and po.post_content
+				like '%#{searchMessage}%'
+				and po.writer like '%#{searchMessage}%'
 			</if>
 		</where>
 		order by po.write_dt desc
@@ -28,9 +45,45 @@
 			limit ${start}, 10;
 		</if>
 	</select>
-	<select id="postTotalCount" resultType="int">
+	<select id="postTotalCount" resultType="int"
+		parameterType="postSearchForm">
 		select count(*) from
 		post_info
+		<where>
+			<if test="fromDt != null">
+				write_dt <![CDATA[>=]]>
+				#{fromDt}
+				and write_dt <![CDATA[<=]]>
+				#{toDt}
+			</if>
+			<if test="categoryId != null">
+				and category_id = #{categoryId}
+			</if>
+			<if test="searchMessage != null">
+				and title like '%#{searchMessage}%'
+				and post_content
+				like '%#{searchMessage}%'
+				and writer like '%#{searchMessage}%'
+			</if>
+		</where>
 	</select>
+	<insert id="insertPost" parameterType="postInfo">
+		insert into post_info
+		(
+		category_id
+		,title
+		,post_content
+		,writer
+		,password
+		)
+		values(
+
+		#{category_id}
+		,#{title}
+		,#{post_content}
+		,#{writer}
+		,#{password}
+		)
+	</insert>
 
 </mapper>

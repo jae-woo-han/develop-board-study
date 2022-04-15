@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 
+import com.board.dto.PostSearchForm;
 import com.board.dto.PostViewDto;
 
 public class PostDao implements MybatisDao {
@@ -15,13 +16,10 @@ public class PostDao implements MybatisDao {
 	 * 기능 : 게시글 목록 조회
 	 * return : List<PostViewDto>
 	 */
-	public List<PostViewDto> getPostViewList(int start) {
+	public List<PostViewDto> getPostViewList(PostSearchForm request) {
 		SqlSession session = factory.openSession(true);
 		
-		Map<String, String> paramMap = new HashMap<>();
-		int startPost = (start-1)*10;
-		paramMap.put("start", Integer.toString(startPost));
-		return session.selectList("post.selectPostView",paramMap);
+		return session.selectList("post.selectPostView",request);
 	}
 	/**
 	 * 기능 : 게시글 단일 조회
@@ -29,14 +27,17 @@ public class PostDao implements MybatisDao {
 	 */
 	public PostViewDto getPostView(String postId){
 		SqlSession session = factory.openSession(true);
-		return session.selectOne("post.selectPostView", postId);
+		PostSearchForm form = PostSearchForm.builder()
+				.postId(postId)
+				.build();
+		return session.selectOne("post.selectPostView", form);
 	}
 	
 	/**
 	 * 기능 : 게시글 전체 수 조회
 	 */
-	public int getPostTotalCount() {
+	public int getPostCount(PostSearchForm request) {
 		SqlSession session = factory.openSession(true);
-		return session.selectOne("post.postTotalCount");
+		return session.selectOne("post.postTotalCount",request);
 	}
 }
