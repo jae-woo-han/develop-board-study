@@ -14,5 +14,21 @@ gradle-app.setting
 # Eclipse Gradle plugin generated files
 # Eclipse Core
 .project
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+# IDEA
+*.iml
+.idea
+/target/

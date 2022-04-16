@@ -10,7 +10,6 @@ repositories {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.4'
     implementation 'org.mybatis:mybatis:3.5.9'
 
