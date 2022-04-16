@@ -67,7 +67,7 @@
 			</if>
 		</where>
 	</select>
-	<insert id="insertPost" parameterType="postInfo">
+	<insert id="insertPost" parameterType="postInfo" useGeneratedKeys="true" keyProperty="postInfo.postId">
 		insert into post_info
 		(
 		category_id
@@ -77,10 +77,9 @@
 		,password
 		)
 		values(
-
-		#{category_id}
+		#{categoryId}
 		,#{title}
-		,#{post_content}
+		,#{postContent}
 		,#{writer}
 		,#{password}
 		)

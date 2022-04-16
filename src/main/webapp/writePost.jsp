@@ -47,7 +47,7 @@ List<CategoryInfo> categoryList = categoryDao.getCategoryAll();
 <body>
 	<header>게시글-등록</header>
 	<main>
-		<form action="" class="form">
+		<form action="insertPost.jsp" method="post" class="form">
 			<div class="flex-container form__row form__row--top">
 				<div class="form__item form__label">카테고리</div>
 				<select name="category" class="form__item form__input">
@@ -86,7 +86,7 @@ List<CategoryInfo> categoryList = categoryDao.getCategoryAll();
 			</div>
 			<div class="flex-container flex-container--justify-between form__button">
 				<input type="button" value="취소" onclick="cancelWrite(); return false">
-				<input type="button" value="저장">
+				<input type="submit" value="저장">
 			</div>
 		</form>
 	</main>

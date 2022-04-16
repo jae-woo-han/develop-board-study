@@ -41,4 +41,9 @@ public class PostDao implements MybatisDao {
 		SqlSession session = factory.openSession(true);
 		return session.selectOne("post.postTotalCount",request);
 	}
+	
+	public int insertPostInfo(PostInfo request) {
+		SqlSession session = factory.openSession(true);
+		return session.insert("post.insertPost", request);
+	}
 }

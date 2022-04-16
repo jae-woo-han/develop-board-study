@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import com.board.domain.PostInfo;
 import com.board.dto.PostSearchForm;
 import com.board.dto.PostViewDto;
 
@@ -33,6 +34,19 @@ class PostDaoTest {
 				.build();
 		assertEquals(31, dao.getPostCount(searchForm));
 	}
-	
+	@Test
+	void 게시글등록() {
+		PostInfo postInfo = new PostInfo();
+		//postInfo.setPostId(32);
+		postInfo.setCategoryId(1);
+		postInfo.setWriter("writ");
+		postInfo.setPassword("12345");
+		postInfo.setTitle("제목");
+		postInfo.setPostContent("내용내용내용");
+		
+		int res = dao.insertPostInfo(postInfo);
+		
+		assertTrue(res==40,Integer.toString(res));
+	}
 
 }
